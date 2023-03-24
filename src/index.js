@@ -1,41 +1,99 @@
 import './css/styles.css';
-import NewsApiService from './fetchCountries.js'
-
-
 
 const DEBOUNCE_DELAY = 300;
-const input = document.querySelector('#search-box');
-const newsApiService = new NewsApiService();
 
-//---------------input-form---------------
+// //--------------2-variant--------------
+import {fetchCountries} from './fetchCountries'
+const input = document.querySelector('#search-box');
+const countryList = document.querySelector('.country-list');
+const countryInfo = document.querySelector('.country-info')  
+
+
+//--------------------input-----------------------
 
 input.addEventListener('input', handleInputForm);
 
-function handleInputForm (e) {
+function handleInputForm (e)  {
 
-    newsApiService.query = e.currentTarget.value;
+const inputCountry = e.currentTarget.value.trim();
+console.log(inputCountry);
+console.dir(event.target);
+fetchCountries(inputCountry).then(country => {
+console.log(country)
+})
 
-    newsApiService.fetchCountries().then(makeCountrysArray);
+
 }
 
-//----------------marcup-----------------------
+//-------------------list-country-------------
 
-const countryInfo = document.querySelector('.country-info');
-
-function makeCountrysArray (data) {
+function makeCountryList() {
     
-const country = data.map(({flags, name, capital, population, languages}) => {
-    return `
-    <img src="${flags}" alt="">
-    <h2>${name}</h2>
-    <p>Capital:${capital}</p>
-    <p>Population:${population}</p>
-    <p>Languages:${languages}</p>        
-    `
-}).join(' ');
-console.log(data)
-console.log(country);
-countryInfo.insertAdjacentHTML('afterbegin', countryInfo) 
-};
-makeCountrysArray();
-//----------------marcup-----------------------
+    const inputList = data.map(({flags, name}) => {
+        return `
+        <img src="${flags.svg}" alt="">
+        <h3>${name.common}</h3>
+        `
+     }).join(' ');    
+    console.log(inputList); 
+    countryList.insertAdjacentHTML('afterbegin', inputList)
+}  
+    makeCountryList();  
+  //-------------------card-country---------------
+function makeCountryInfo () {
+    
+    const inputInfo = inputCountry.map(({flags, name, capital, population, languages}) => {
+        return `
+        <img src="${flags.svg}" alt="">
+        <h2>${name.common}</h2>
+        <p>Capital:${capital}</p>
+        <p>Population:${population}</p>
+        <p>Languages:${Object.values(languages)}</p>
+        `
+    }).join(' ');
+    console.log(inputInfo)
+    countryInfo.insertAdjacentHTML('afterbegin', countryInfo) 
+    };
+makeCountryInfo();
+
+
+
+
+
+
+//----------------1-variant----------
+// import NewsApiService from './fetchCountries.js'
+
+// const newsApiService = new NewsApiService();
+// const input = document.querySelector('#search-box');
+// const countryInfo = document.querySelector('.country-info');
+
+
+// //---------------input-form---------------
+
+// input.addEventListener('input', handleInputForm);
+
+// function handleInputForm (e) {
+
+//     newsApiService.query = e.currentTarget.value.trim();
+//     newsApiService.fetchCountries().then(makeCountryInfo);
+
+// }
+
+// //----------------marcup-----------------------
+// function makeCountryInfo (data) {
+    
+// const country = data.map(({flags, name, capital, population, languages}) => {
+//     return `
+//     <img src="${flags.svg}" alt="">
+//     <h2>${name.common}</h2>
+//     <p>Capital:${capital}</p>
+//     <p>Population:${population}</p>
+//     <p>Languages:${Object.values(languages)}</p>
+//     `
+// }).join(' ');
+// console.log(data)
+// console.log(country);
+// countryInfo.insertAdjacentHTML('afterbegin', countryInfo) 
+// };
+// makeCountryInfo();
