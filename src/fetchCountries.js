@@ -1,7 +1,7 @@
 //-----------------2-variant----------
 
 function fetchCountries (countryNames) {
-    fetch(`https://restcountries.com/v3.1/name/${countryNames}?fields=name,flags,capital,population,languages`)
+    return fetch(`https://restcountries.com/v3.1/name/${countryNames}?fields=name,flags,capital,population,languages`)
         .then(response => {
            
             if(!response.ok) {
@@ -10,9 +10,9 @@ function fetchCountries (countryNames) {
            
             return response.json();
         })
-        .then(country => {
-            console.log(country);
-            return country;
+        .then(data => {
+            console.log(data);
+            return data;
          })
          .catch((err) => {
             console.warn(err);

@@ -18,3 +18,15 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+.flags_list {
+  width: 60px;
+  height: 40px;
+}
+
+
+
+
+.flags_info {
+  width: 150px;
+  height: 100px;
+}
