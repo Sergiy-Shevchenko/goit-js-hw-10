@@ -1,10 +1,10 @@
 import './css/styles.css';
 
-
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import debounce from 'lodash.debounce';
 const DEBOUNCE_DELAY = 300;
 
-// //--------------2-variant--------------
+// //--------------2-variant----------------------
 import {fetchCountries} from './fetchCountries'
 const input = document.querySelector('#search-box');
 const countryList = document.querySelector('.country-list');
@@ -16,41 +16,71 @@ input.addEventListener('input', debounce(handleInputForm, DEBOUNCE_DELAY));
 
 function handleInputForm (e)  {
 
-const inputCountry = e.currentTarget.value.trim();
+const inputCountry = e.target.value.trim();
 console.log(inputCountry);
-//console.dir(event.target);
-fetchCountries(inputCountry).then(makeCountryList); 
+if (inputCountry === '') {
+return (makeCountryInfo.innerHTML = ''), (makeCountryList.innerHTML = '')
+} 
+    //console.dir(event.target);
+    //fetchCountries(inputCountry).then(makeCountryInfo);
+    // 
+    //fetchCountries(inputCountry).then(makeCountryList)
+    //fetchCountries(inputCountry).then(makeCountryInfo)
+
+    fetchCountries(inputCountry)
+    .then(data => {
+        makeCountryInfo.innerHTML = ''
+        makeCountryList.innerHTML = ''
+        if (data.length === 1) {
+            countryInfo.insertAdjacentHTML('afterbegin', makeCountryInfo (data))   
+            countryList.insertAdjacentHTML = ''
+        }
+        if (data.length >= 10) 
+        {
+        Notify.success("Too many matches found. Please enter a more specific name.");
+    }
+        if (data.length !== 1){
+    countryList.insertAdjacentHTML('afterbegin', makeCountryList(data))
+    countryInfo.insertAdjacentHTML = ''
+}})
+  
+    .catch(() => {Notify.failure("Oops, there is no country with that name")})
 }
 
 //-------------------list-country-------------
 
 function makeCountryList(data) {
     
-    const inputList = data.map(({flags, name}) => {
+    const inputList = data.map(({flags, name}) => {(data)
         return `
+        <li class="flags_name_list">
         <img class="flags_list" src="${flags.svg}" alt="">
-        <h3>${name.common}</h3>
+        <h2>${name.official}</h2>
+        </li>
         `
      }).join(' ');    
     console.log(inputList);
-    console.log(data);
-    countryList.insertAdjacentHTML('afterbegin', inputList)
+    return inputList;
+    //countryList.insertAdjacentHTML('afterbegin', inputList)
 }  
     makeCountryList();  
   //-------------------card-country---------------
-function makeCountryInfo () {
+function makeCountryInfo (data) {
     
-    const inputInfo = inputCountry.map(({flags, name, capital, population, languages}) => {
+    const inputInfo = data.map(({flags, name, capital, population, languages}) => {(data)
         return `
+        <div class="flafs_name_info">
         <img class="flags_info" src="${flags.svg}" alt="">
-        <h2>${name.common}</h2>
+        <h2>${name.official}</h2>
+        </div>
         <p>Capital:${capital}</p>
         <p>Population:${population}</p>
         <p>Languages:${Object.values(languages)}</p>
         `
-    }).join(' ');
+    }).join('');
     console.log(inputInfo)
-    countryInfo.insertAdjacentHTML('afterbegin', countryInfo) 
+    return inputInfo;
+    //countryInfo.insertAdjacentHTML('afterbegin', inputInfo) 
     };
 makeCountryInfo();
 
@@ -73,7 +103,7 @@ makeCountryInfo();
 
 // function handleInputForm (e) {
 
-//     newsApiService.query = e.currentTarget.value.trim();
+//     newsApiService.query = e.target.value.trim();
 //     newsApiService.fetchCountries().then(makeCountryList);
     
     
