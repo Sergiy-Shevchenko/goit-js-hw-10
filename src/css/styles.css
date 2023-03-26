@@ -49,3 +49,26 @@ body {
 .flags_info {
   margin-right: 15px;
 }
+
+.name_list,
+.name_info,
+.info_title,
+.info_list {
+  text-decoration: none;
+}
+
+.info_title {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 5px;
+}
+
+.name_info {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 48px;
+}
+
+.info_title {
+font-weight: 700;
+}

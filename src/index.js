@@ -3,14 +3,15 @@ import './css/styles.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import debounce from 'lodash.debounce';
 const DEBOUNCE_DELAY = 300;
-
-// //--------------2-variant----------------------
 import {fetchCountries} from './fetchCountries'
+
+//--------------2-variant-----------------------------------
+
 const input = document.querySelector('#search-box');
 const countryList = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info')  
 
-//--------------------input-----------------------
+//--------------------input---------------------------------
 
 input.addEventListener('input', debounce(handleInputForm, DEBOUNCE_DELAY));
 
@@ -18,75 +19,70 @@ function handleInputForm (e)  {
 
 const inputCounrty = e.target.value.trim();
 console.log(inputCounrty);
-if (inputCounrty === ' ') {
-return (makeCountryList.innerHTML = ''), (makeCountryInfo.innerHTML = '')
+if (inputCounrty === '') {
+return (countryList.innerHTML = ''), (countryInfo.innerHTML = '')
 } 
-    //console.dir(event.target);
-    //fetchCountries(inputCountry).then(makeCountryInfo);
-    // 
-    //fetchCountries(inputCountry).then(makeCountryList)
-    //fetchCountries(inputCountry).then(makeCountryInfo)
-
+   
     fetchCountries(inputCounrty)
     .then(countries => {
-        makeCountryList.innerHTML = ''
-        makeCountryInfo.innerHTML = ''
+        countryList.innerHTML = ''
+        countryInfo.innerHTML = ''
         
         if (countries.length === 1) {
-            countryList.insertAdjacentHTML('beforeend', makeCountryList(countries))
             countryInfo.insertAdjacentHTML('beforeend', makeCountryInfo (countries))  
             }
         else if (countries.length >= 10) {
         Notify.success("Too many matches found. Please enter a more specific name.");
         }
-        else {
+        else  {
         countryList.insertAdjacentHTML('beforeend', makeCountryList(countries));
          }
         })
     .catch(Notify.failure("Oops, there is no country with that name"))
+        
 }
 
-//-------------------list-country-------------
+//-------------------card-list-country-------------
 
 function makeCountryList(countries) {
     
-    const marcup = countries.map(({flags, name}) => {
+    const makeCountry = countries.map(({flags, name}) => {
         return `
         <li class="flags_name_list">
         <img class="flags_list" src="${flags.svg}" alt="">
-        <h2>${name.official}</h2>
+        <h2 class="name_list">${name.official}</h2>
         </li>
         `
      }).join(' ');    
-    //console.log(inputList);
-    return marcup;
-    //countryList.insertAdjacentHTML('afterbegin', inputList)
+     return makeCountry;
 }  
-    //makeCountryList();  
-  
-  
+ 
 //-------------------card-country---------------
+
 function makeCountryInfo (countries) {
     
-    const marcup = countries.map(({flags, name, capital, population, languages}) => {
+    const makeCountry = countries.map(({flags, name, capital, population, languages}) => {
         return `
         <div class="flafs_name_info">
         <img class="flags_info" src="${flags.svg}" alt="">
-        <h2>${name.official}</h2>
+        <h2 class="name_info">${name.official}</h2>
         </div>
-        <p>Capital:${capital}</p>
-        <p>Population:${population}</p>
-        <p>Languages:${Object.values(languages)}</p>
+        <div class="flafs_name_info">
+        <p class="info_title">Capital:</p>
+        <span class="info_list">${capital}</span>
+        </div>
+        <div class="flafs_name_info">
+        <p class="info_title">Population:</p>
+        <span class="info_list">${population}</span>
+        </div>
+        <div class="flafs_name_info">
+        <p class="info_title">Languages:</p>
+        <span class="info_list">${Object.values(languages)}</span>
+        </div>
         `
     }).join('');
-    //console.log(inputInfo)
-    return marcup;
-    //countryInfo.insertAdjacentHTML('afterbegin', inputInfo) 
-    };
-//makeCountryInfo();
-
-
-
+    return makeCountry;
+};
 
 
 
