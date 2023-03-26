@@ -32,13 +32,14 @@ return (countryList.innerHTML = ''), (countryInfo.innerHTML = '')
             countryInfo.insertAdjacentHTML('beforeend', makeCountryInfo (countries))  
             }
         else if (countries.length >= 10) {
-        Notify.success("Too many matches found. Please enter a more specific name.");
+            addTextCountry ();
         }
         else  {
         countryList.insertAdjacentHTML('beforeend', makeCountryList(countries));
          }
         })
-    .catch(Notify.failure("Oops, there is no country with that name"))
+    .catch(changeTextCountry());
+    
         
 }
 
@@ -84,6 +85,16 @@ function makeCountryInfo (countries) {
     return makeCountry;
 };
 
+function addTextCountry () {
+    Notify.success("Too many matches found. Please enter a more specific name.");    
+}
+
+function changeTextCountry () {
+    //if (countries.length === 0) {
+     Notify.failure("Oops, there is no country with that name");
+    // return
+//}
+}
 
 
 //----------------1-variant----------
