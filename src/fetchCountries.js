@@ -1,24 +1,46 @@
+export const fetchCountries = name => fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+        return response.json();
+    });
+
+
+
+
+// export function fetchCountries (name) {
+//     fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,flags,capital,population,languages`)
+//         .then(response =>  {
+//             if(!response.ok) {
+//                 throw new Error(response.status)
+//                 }
+//                 return response.json();
+//         })
+// }       
+
+
 //-----------------2-variant----------
 
-function fetchCountries (countryNames) {
-    return fetch(`https://restcountries.com/v3.1/name/${countryNames}?fields=name,flags,capital,population,languages`)
-        .then(response => {
+// function fetchCountries (countryNames) {
+//     return fetch(`https://restcountries.com/v3.1/name/${countryNames}?fields=name,flags,capital,population,languages`)
+//         .then(response => {
            
-            if(!response.ok) {
-                throw new Error(response.status)
-            }
+//             if(!response.ok) {
+//                 throw new Error(response.status)
+//             }
            
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            return data;
-         })
-         .catch((err) => {
-            console.warn(err);
-         })
-    }
-export {fetchCountries}
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log(data);
+//             return data;
+//          })
+//          .catch((err) => {
+//             console.warn(err);
+//          })
+//     }
+// export {fetchCountries}
 
 
 //-------------------1-variant---------------

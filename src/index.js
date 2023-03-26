@@ -16,10 +16,10 @@ input.addEventListener('input', debounce(handleInputForm, DEBOUNCE_DELAY));
 
 function handleInputForm (e)  {
 
-const inputCountry = e.target.value.trim();
-console.log(inputCountry);
-if (inputCountry === '') {
-return (makeCountryInfo.innerHTML = ''), (makeCountryList.innerHTML = '')
+const inputCounrty = e.target.value.trim();
+console.log(inputCounrty);
+if (inputCounrty === ' ') {
+return (makeCountryList.innerHTML = ''), (makeCountryInfo.innerHTML = '')
 } 
     //console.dir(event.target);
     //fetchCountries(inputCountry).then(makeCountryInfo);
@@ -27,31 +27,30 @@ return (makeCountryInfo.innerHTML = ''), (makeCountryList.innerHTML = '')
     //fetchCountries(inputCountry).then(makeCountryList)
     //fetchCountries(inputCountry).then(makeCountryInfo)
 
-    fetchCountries(inputCountry)
-    .then(data => {
-        makeCountryInfo.innerHTML = ''
+    fetchCountries(inputCounrty)
+    .then(countries => {
         makeCountryList.innerHTML = ''
-        if (data.length === 1) {
-            countryInfo.insertAdjacentHTML('afterbegin', makeCountryInfo (data))   
-            countryList.insertAdjacentHTML = ''
-        }
-        if (data.length >= 10) 
-        {
+        makeCountryInfo.innerHTML = ''
+        
+        if (countries.length === 1) {
+            countryList.insertAdjacentHTML('beforeend', makeCountryList(countries))
+            countryInfo.insertAdjacentHTML('beforeend', makeCountryInfo (countries))  
+            }
+        else if (countries.length >= 10) {
         Notify.success("Too many matches found. Please enter a more specific name.");
-    }
-        if (data.length !== 1){
-    countryList.insertAdjacentHTML('afterbegin', makeCountryList(data))
-    countryInfo.insertAdjacentHTML = ''
-}})
-  
-    .catch(() => {Notify.failure("Oops, there is no country with that name")})
+        }
+        else {
+        countryList.insertAdjacentHTML('beforeend', makeCountryList(countries));
+         }
+        })
+    .catch(Notify.failure("Oops, there is no country with that name"))
 }
 
 //-------------------list-country-------------
 
-function makeCountryList(data) {
+function makeCountryList(countries) {
     
-    const inputList = data.map(({flags, name}) => {(data)
+    const marcup = countries.map(({flags, name}) => {
         return `
         <li class="flags_name_list">
         <img class="flags_list" src="${flags.svg}" alt="">
@@ -59,15 +58,17 @@ function makeCountryList(data) {
         </li>
         `
      }).join(' ');    
-    console.log(inputList);
-    return inputList;
+    //console.log(inputList);
+    return marcup;
     //countryList.insertAdjacentHTML('afterbegin', inputList)
 }  
-    makeCountryList();  
-  //-------------------card-country---------------
-function makeCountryInfo (data) {
+    //makeCountryList();  
+  
+  
+//-------------------card-country---------------
+function makeCountryInfo (countries) {
     
-    const inputInfo = data.map(({flags, name, capital, population, languages}) => {(data)
+    const marcup = countries.map(({flags, name, capital, population, languages}) => {
         return `
         <div class="flafs_name_info">
         <img class="flags_info" src="${flags.svg}" alt="">
@@ -78,11 +79,11 @@ function makeCountryInfo (data) {
         <p>Languages:${Object.values(languages)}</p>
         `
     }).join('');
-    console.log(inputInfo)
-    return inputInfo;
+    //console.log(inputInfo)
+    return marcup;
     //countryInfo.insertAdjacentHTML('afterbegin', inputInfo) 
     };
-makeCountryInfo();
+//makeCountryInfo();
 
 
 
